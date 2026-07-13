@@ -28,6 +28,9 @@ type VirtualKeyCode uint16
  *   因此，在需要精确区分物理按键时，应结合 scan code 或底层输入信息使用。
  */
 const (
+	VK_LBUTTON    VirtualKeyCode = 0x01
+	VK_RBUTTON    VirtualKeyCode = 0x02
+	VK_MBUTTON    VirtualKeyCode = 0x04
 	VK_BACK       VirtualKeyCode = 0x08
 	VK_TAB        VirtualKeyCode = 0x09
 	VK_RETURN     VirtualKeyCode = 0x0D
@@ -44,6 +47,7 @@ const (
 	VK_RIGHT      VirtualKeyCode = 0x27
 	VK_DOWN       VirtualKeyCode = 0x28
 	VK_PRINT      VirtualKeyCode = 0x2A
+	VK_SNAPSHOT   VirtualKeyCode = 0x2C
 	VK_INSERT     VirtualKeyCode = 0x2D
 	VK_DELETE     VirtualKeyCode = 0x2E
 	VK_0          VirtualKeyCode = 0x30
@@ -177,6 +181,7 @@ func init() {
 	mapper.codeToName[VK_F19] = Key_F19
 	mapper.codeToName[VK_F20] = Key_F20
 	mapper.codeToName[VK_PRINT] = Key_Print
+	mapper.codeToName[VK_SNAPSHOT] = Key_Print
 	mapper.codeToName[VK_SCROLL] = Key_Scroll
 	mapper.codeToName[VK_PAUSE] = Key_Pause
 
@@ -299,31 +304,31 @@ func GetKeyLayout(l LayoutType) Layout {
 	case LayoutANSI:
 		return Layout{
 			{
-				{Code: "Esc", Label: "Esc", W: 1},
-				{Code: "None", Label: "", W: 1},
-				{Code: "F1", Label: "F1", W: 1},
-				{Code: "F2", Label: "F2", W: 1},
-				{Code: "F3", Label: "F3", W: 1},
-				{Code: "F4", Label: "F4", W: 1},
-				{Code: "None", Label: "", W: 0.5},
-				{Code: "F5", Label: "F5", W: 1},
-				{Code: "F6", Label: "F6", W: 1},
-				{Code: "F7", Label: "F7", W: 1},
-				{Code: "F8", Label: "F8", W: 1},
-				{Code: "None", Label: "", W: 0.5},
-				{Code: "F9", Label: "F9", W: 1},
-				{Code: "F10", Label: "F10", W: 1},
-				{Code: "F11", Label: "F11", W: 1},
-				{Code: "F12", Label: "F12", W: 1},
-				{Code: "None", Label: "", W: 0.2},
-				{Code: "Print", Label: "PrtSc", W: 1},
-				{Code: "Scroll", Label: "Scroll\nLock", W: 1},
-				{Code: "Pause", Label: "Pause\nBreak", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "Esc", Label: "Esc", W: 1.15},
+				{Code: "F1", Label: "F1", W: 0.8},
+				{Code: "F2", Label: "F2", W: 0.8},
+				{Code: "F3", Label: "F3", W: 0.8},
+				{Code: "F4", Label: "F4", W: 0.8},
+				{Code: "F5", Label: "F5", W: 0.8},
+				{Code: "F6", Label: "F6", W: 0.8},
+				{Code: "F7", Label: "F7", W: 0.8},
+				{Code: "F8", Label: "F8", W: 0.8},
+				{Code: "F9", Label: "F9", W: 0.8},
+				{Code: "F10", Label: "F10", W: 0.8},
+				{Code: "F11", Label: "F11", W: 0.8},
+				{Code: "F12", Label: "F12", W: 0.8},
+				{Code: "Insert", Label: "Insert", W: 1.25},
+				{Code: "Print", Label: "PrtSc", W: 1.25},
+				{Code: "Del", Label: "Delete", W: 1.25},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "None", Label: "", W: 1},
 				{Code: "None", Label: "", W: 1},
 				{Code: "None", Label: "", W: 1},
-				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 0.25},
+				{Code: "Home", Label: "Home", W: 1},
+				{Code: "End", Label: "End", W: 1},
+				{Code: "PageUp", Label: "PgUp", W: 1},
+				{Code: "PageDown", Label: "PgDn", W: 1},
 			},
 			{
 				{Code: "`", Label: "`", W: 1},
@@ -339,19 +344,19 @@ func GetKeyLayout(l LayoutType) Layout {
 				{Code: "0", Label: "0", W: 1},
 				{Code: "-", Label: "-", W: 1},
 				{Code: "=", Label: "=", W: 1},
-				{Code: "Delete", Label: "⌫", W: 2},
-				{Code: "None", Label: "", W: 0.2},
-				{Code: "Insert", Label: "Ins", W: 1},
-				{Code: "Home", Label: "Home", W: 1},
-				{Code: "PageUp", Label: "PgUp", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "Delete", Label: "Backspace", W: 1.5},
+				{Code: "None", Label: "", W: 0.25},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "NumLock", Label: "Num\nLock", W: 1},
 				{Code: "NumPad /", Label: "/", W: 1},
 				{Code: "NumPad *", Label: "*", W: 1},
 				{Code: "NumPad -", Label: "-", W: 1},
 			},
 			{
-				{Code: "Tab", Label: "⇥", W: 1.5},
+				{Code: "Tab", Label: "Tab", W: 1.5},
 				{Code: "Q", Label: "Q", W: 1},
 				{Code: "W", Label: "W", W: 1},
 				{Code: "E", Label: "E", W: 1},
@@ -364,19 +369,19 @@ func GetKeyLayout(l LayoutType) Layout {
 				{Code: "P", Label: "P", W: 1},
 				{Code: "[", Label: "[", W: 1},
 				{Code: "]", Label: "]", W: 1},
-				{Code: "\\", Label: "\\", W: 1.5},
-				{Code: "None", Label: "", W: 0.2},
-				{Code: "Del", Label: "Delete", W: 1},
-				{Code: "End", Label: "End", W: 1},
-				{Code: "PageDown", Label: "PgDn", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "\\", Label: "\\", W: 1},
+				{Code: "None", Label: "", W: 0.25},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 1},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "NumPad7", Label: "7", W: 1},
 				{Code: "NumPad8", Label: "8", W: 1},
 				{Code: "NumPad9", Label: "9", W: 1},
 				{Code: "NumPad +", Label: "+", W: 1},
 			},
 			{
-				{Code: "CapsLock", Label: "⇪", W: 1.75},
+				{Code: "CapsLock", Label: "CapsLk", W: 1.75},
 				{Code: "A", Label: "A", W: 1},
 				{Code: "S", Label: "S", W: 1},
 				{Code: "D", Label: "D", W: 1},
@@ -388,19 +393,19 @@ func GetKeyLayout(l LayoutType) Layout {
 				{Code: "L", Label: "L", W: 1},
 				{Code: ";", Label: ";", W: 1},
 				{Code: "'", Label: "'", W: 1},
-				{Code: "Enter", Label: "⏎", W: 2.25},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "Enter", Label: "⏎", W: 1.75},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "None", Label: "", W: 1},
 				{Code: "None", Label: "", W: 1},
 				{Code: "None", Label: "", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "NumPad4", Label: "4", W: 1},
 				{Code: "NumPad5", Label: "5", W: 1},
 				{Code: "NumPad6", Label: "6", W: 1},
 				{Code: "NumPad +", Label: "+", W: 1},
 			},
 			{
-				{Code: "Shift", Label: "⇧", W: 2.25},
+				{Code: "Shift", Label: "Shift", W: 2.25},
 				{Code: "Z", Label: "Z", W: 1},
 				{Code: "X", Label: "X", W: 1},
 				{Code: "C", Label: "C", W: 1},
@@ -411,12 +416,12 @@ func GetKeyLayout(l LayoutType) Layout {
 				{Code: ",", Label: ",", W: 1},
 				{Code: ".", Label: ".", W: 1},
 				{Code: "/", Label: "/", W: 1},
-				{Code: "RightShift", Label: "⇧", W: 2.75},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "RightShift", Label: "Shift", W: 2.25},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "None", Label: "", W: 1},
 				{Code: "↑", Label: "▲", W: 1},
 				{Code: "None", Label: "", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "NumPad1", Label: "1", W: 1},
 				{Code: "NumPad2", Label: "2", W: 1},
 				{Code: "NumPad3", Label: "3", W: 1},
@@ -424,18 +429,17 @@ func GetKeyLayout(l LayoutType) Layout {
 			},
 			{
 				{Code: "Ctrl", Label: "Ctrl", W: 1.25},
+				{Code: "RightMenu", Label: "Fn", W: 1.25},
 				{Code: "Win", Label: "Win", W: 1.25},
 				{Code: "Alt", Label: "Alt", W: 1.25},
-				{Code: "Space", Label: "", W: 6.25},
-				{Code: "RightCtrl", Label: "Ctrl", W: 1.25},
-				{Code: "RightWin", Label: "Win", W: 1.25},
-				{Code: "RightMenu", Label: "Menu", W: 1.25},
+				{Code: "Space", Label: "", W: 7},
 				{Code: "RightAlt", Label: "Alt", W: 1.25},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "RightCtrl", Label: "Ctrl", W: 1.25},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "←", Label: "◀", W: 1},
 				{Code: "↓", Label: "▼", W: 1},
 				{Code: "→", Label: "▶", W: 1},
-				{Code: "None", Label: "", W: 0.2},
+				{Code: "None", Label: "", W: 0.25},
 				{Code: "NumPad0", Label: "0", W: 2},
 				{Code: "NumPad .", Label: ".", W: 1},
 				{Code: "NumPad Enter", Label: "⏎", W: 1},
