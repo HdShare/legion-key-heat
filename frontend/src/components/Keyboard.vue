@@ -321,22 +321,13 @@ const startPermissionWatch = () => {
         停止监听
       </div>
       <div class="action-btn primary" v-if="!bootStartup" @click="openBootStartup">
-        开机自启动
+        开启自启动
       </div>
       <div class="action-btn danger" v-if="bootStartup" @click="closeBootStartup">
-        关闭开机自启动
+        关闭自启动
       </div>
     </div>
     <div class="status-right">
-      <div class="status-item">
-        <div class="dot-wrapper">
-          <span class="dot" :class="{ ok: bootStartup, bad: !bootStartup }"></span>
-          <div class="tooltip-status">
-            {{ permission ? "已开启开机自启动" : "未开启开机自启动" }}
-          </div>
-        </div>
-        <span class="label">自启动</span>
-      </div>
       <div class="status-item">
         <div class="dot-wrapper">
           <span class="dot" :class="{ ok: permission, bad: !permission }"></span>
@@ -354,6 +345,15 @@ const startPermissionWatch = () => {
           </div>
         </div>
         <span class="label">监听</span>
+      </div>
+      <div class="status-item">
+        <div class="dot-wrapper">
+          <span class="dot" :class="{ ok: bootStartup, bad: !bootStartup }"></span>
+          <div class="tooltip-status">
+            {{ permission ? "已开启开机自启动" : "未开启开机自启动" }}
+          </div>
+        </div>
+        <span class="label">自启动</span>
       </div>
     </div>
   </div>
@@ -666,7 +666,7 @@ const startPermissionWatch = () => {
   display: flex;
   gap: 10px;
   position: relative;
-  right: -15px;
+  right: 5px;
 }
 
 .action-btn {
