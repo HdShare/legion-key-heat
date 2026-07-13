@@ -149,8 +149,8 @@ func (t *TrayApp) createMenu() {
 func (t *TrayApp) openWindow() {
 	t.window = t.app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:  "Key Heat",
-		Width:  1200,
-		Height: 600,
+		Width:  1000,
+		Height: 500,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,

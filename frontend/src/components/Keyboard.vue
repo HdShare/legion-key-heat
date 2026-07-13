@@ -91,7 +91,7 @@ const getKeyContentStyle = (key) => {
 const keyStyleCache = computed(() => {
   const h = keyHeight.value
   const gap = Math.floor(h / 9)
-  const fontSize = Math.floor(h / 4)
+  const fontSize = Math.floor(h / 4.5)
   const size = `calc(100% - ${gap * 2}px)`
   return {
     fontSize: `${fontSize}px`,
@@ -384,7 +384,7 @@ const startPermissionWatch = () => {
       <span class="separator">—</span>
       <input type="date" v-model="endDate" class="date-input" />
       <div class="apply-btn" @click="startDate = endDate = ''">
-        清空
+        重置日期
       </div>
       <div class="apply-btn" @click="getPrompt">
         生成报告
@@ -397,7 +397,7 @@ const startPermissionWatch = () => {
 
 <style scoped>
 .keyboard {
-  width: 85%;
+  width: 90%;
   padding: 15px;
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.7);
@@ -459,7 +459,7 @@ const startPermissionWatch = () => {
   border-radius: 999px;
   padding: 4px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  left: -15px;
+  left: -40px;
 }
 
 .indicator {
@@ -507,7 +507,7 @@ const startPermissionWatch = () => {
   gap: 8px;
   margin-left: auto;
   position: relative;
-  right: -15px;
+  right: -40px;
 }
 
 .date-input {
@@ -568,9 +568,9 @@ const startPermissionWatch = () => {
 .status-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 8px;
   position: relative;
-  left: -15px;
+  left: -40px;
 }
 
 .status-item {
@@ -666,7 +666,7 @@ const startPermissionWatch = () => {
   display: flex;
   gap: 10px;
   position: relative;
-  right: 5px;
+  right: -25px;
 }
 
 .action-btn {
