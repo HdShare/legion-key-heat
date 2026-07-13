@@ -17,6 +17,12 @@ type KeyEventListener struct {
 	app      *application.App
 }
 
+const (
+	goHookExtendedKeyPrefix uint16 = 0x0E00
+	enterScanCode           uint16 = 0x001C
+	keypadEnterScancode     uint16 = goHookExtendedKeyPrefix | enterScanCode
+)
+
 func NewKeyEventListener(keyChan chan<- string, app *application.App) *KeyEventListener {
 	return &KeyEventListener{
 		keyChan:  keyChan,
@@ -24,6 +30,13 @@ func NewKeyEventListener(keyChan chan<- string, app *application.App) *KeyEventL
 		mapper:   keymap.GetGlobalMapper(),
 		app:      app,
 	}
+}
+
+func (l *KeyEventListener) normalizeKeyName(rawcode, keycode uint16) string {
+	if rawcode == 0x0D && keycode == keypadEnterScancode {
+		return keymap.Key_KeypadEnter
+	}
+	return l.mapper.Normalize(rawcode)
 }
 
 // 开始监听
@@ -43,7 +56,7 @@ func (l *KeyEventListener) Start() error {
 				return nil
 			}
 			if ev.Kind == hook.KeyDown {
-				keyName := l.mapper.Normalize(ev.Rawcode)
+				keyName := l.normalizeKeyName(ev.Rawcode, ev.Keycode)
 				l.app.Event.Emit("key:pressed", map[string]any{
 					"key":  keyName,
 					"raw":  ev.Rawcode,
@@ -56,7 +69,7 @@ func (l *KeyEventListener) Start() error {
 				}
 			}
 			if ev.Kind == hook.KeyUp {
-				keyName := l.mapper.Normalize(ev.Rawcode)
+				keyName := l.normalizeKeyName(ev.Rawcode, ev.Keycode)
 				l.app.Event.Emit("key:pressed", map[string]any{
 					"key":  keyName,
 					"raw":  ev.Rawcode,
