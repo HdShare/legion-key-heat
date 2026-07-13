@@ -15,6 +15,7 @@ type KeyEventListener struct {
 	mapper   keymap.KeyMapper
 	once     sync.Once
 	app      *application.App
+	pressed  map[keyIdentity]struct{}
 }
 
 const (
@@ -23,12 +24,18 @@ const (
 	keypadEnterScancode     uint16 = goHookExtendedKeyPrefix | enterScanCode
 )
 
+type keyIdentity struct {
+	rawcode uint16
+	keycode uint16
+}
+
 func NewKeyEventListener(keyChan chan<- string, app *application.App) *KeyEventListener {
 	return &KeyEventListener{
 		keyChan:  keyChan,
 		stopChan: make(chan struct{}),
 		mapper:   keymap.GetGlobalMapper(),
 		app:      app,
+		pressed:  make(map[keyIdentity]struct{}),
 	}
 }
 
@@ -39,11 +46,16 @@ func (l *KeyEventListener) normalizeKeyName(rawcode, keycode uint16) string {
 	return l.mapper.Normalize(rawcode)
 }
 
+func (l *KeyEventListener) keyID(rawcode, keycode uint16) keyIdentity {
+	return keyIdentity{rawcode: rawcode, keycode: keycode}
+}
+
 // 开始监听
 func (l *KeyEventListener) Start() error {
 	log.Println("键盘监听启动中...")
 	evChan := hook.Start()
 	log.Println("键盘监听已启动")
+
 	for {
 		select {
 		case <-l.stopChan:
@@ -56,6 +68,12 @@ func (l *KeyEventListener) Start() error {
 				return nil
 			}
 			if ev.Kind == hook.KeyDown {
+				id := l.keyID(ev.Rawcode, ev.Keycode)
+				if _, exists := l.pressed[id]; exists {
+					continue
+				}
+				l.pressed[id] = struct{}{}
+
 				keyName := l.normalizeKeyName(ev.Rawcode, ev.Keycode)
 				l.app.Event.Emit("key:pressed", map[string]any{
 					"key":  keyName,
@@ -69,6 +87,8 @@ func (l *KeyEventListener) Start() error {
 				}
 			}
 			if ev.Kind == hook.KeyUp {
+				delete(l.pressed, l.keyID(ev.Rawcode, ev.Keycode))
+
 				keyName := l.normalizeKeyName(ev.Rawcode, ev.Keycode)
 				l.app.Event.Emit("key:pressed", map[string]any{
 					"key":  keyName,
