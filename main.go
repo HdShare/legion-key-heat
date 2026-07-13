@@ -117,24 +117,8 @@ func (t *TrayApp) setup() {
 // 创建菜单
 func (t *TrayApp) createMenu() {
 	t.menu = t.app.NewMenu()
-	t.menu.Add("KeyHeat").SetEnabled(false)
-	// 切换监听状态
-	if t.isActive {
-		t.menu.Add("● 正在监听").SetEnabled(false)
-		// Toggle active
-		t.menu.Add("停止监听").OnClick(func(ctx *application.Context) {
-			t.stopListening()
-		})
-	} else {
-		t.menu.Add("○ 已停止").SetEnabled(false)
-		// Toggle active
-		t.menu.Add("启动监听").OnClick(func(ctx *application.Context) {
-			t.startListening()
-		})
-	}
-	t.menu.AddSeparator()
-	// 打开主界面
-	t.menu.Add("打开主界面").OnClick(func(ctx *application.Context) {
+	// 显示面板
+	t.menu.Add("显示面板").OnClick(func(ctx *application.Context) {
 		if t.window == nil {
 			t.openWindow()
 		}
@@ -142,6 +126,17 @@ func (t *TrayApp) createMenu() {
 		t.window.Show()
 		t.window.Focus()
 	})
+	t.menu.AddSeparator()
+	// 切换监听
+	if t.isActive {
+		t.menu.Add("停止监听").OnClick(func(ctx *application.Context) {
+			t.stopListening()
+		})
+	} else {
+		t.menu.Add("启动监听").OnClick(func(ctx *application.Context) {
+			t.startListening()
+		})
+	}
 	t.menu.AddSeparator()
 	// 退出软件
 	t.menu.Add("退出").OnClick(func(ctx *application.Context) {
