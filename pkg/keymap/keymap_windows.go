@@ -180,8 +180,8 @@ func init() {
 	mapper.codeToName[VK_F18] = Key_F18
 	mapper.codeToName[VK_F19] = Key_F19
 	mapper.codeToName[VK_F20] = Key_F20
-	mapper.codeToName[VK_PRINT] = Key_Print
-	mapper.codeToName[VK_SNAPSHOT] = Key_Print
+	mapper.codeToName[VK_PRINT] = Key_PrtSc
+	mapper.codeToName[VK_SNAPSHOT] = Key_PrtSc
 	mapper.codeToName[VK_SCROLL] = Key_Scroll
 	mapper.codeToName[VK_PAUSE] = Key_Pause
 
@@ -318,7 +318,7 @@ func GetKeyLayout(l LayoutType) Layout {
 				{Code: "F11", Label: "F11", W: 0.8},
 				{Code: "F12", Label: "F12", W: 0.8},
 				{Code: "Insert", Label: "Insert", W: 1.25},
-				{Code: "Print", Label: "PrtSc", W: 1.25},
+				{Code: "PrtSc", Label: "PrtSc", W: 1.25},
 				{Code: "Del", Label: "Delete", W: 1.25},
 				{Code: "None", Label: "", W: 0.25},
 				{Code: "None", Label: "", W: 1},
@@ -429,7 +429,7 @@ func GetKeyLayout(l LayoutType) Layout {
 			},
 			{
 				{Code: "Ctrl", Label: "Ctrl", W: 1.25},
-				{Code: "RightMenu", Label: "Fn", W: 1.25},
+				{Code: "", Label: "Fn", W: 1.25},
 				{Code: "Win", Label: "Win", W: 1.25},
 				{Code: "Alt", Label: "Alt", W: 1.25},
 				{Code: "Space", Label: "", W: 7},

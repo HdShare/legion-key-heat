@@ -153,7 +153,7 @@ const (
 	Key_RightWin        = "RightWin"
 	Key_RightMenu       = "RightMenu"
 	Key_RightAlt        = "RightAlt"
-	Key_Print           = "Print"
+	Key_PrtSc           = "PrtSc"
 	Key_Scroll          = "Scroll"
 	Key_Pause           = "Pause"
 	Key_Insert          = "Insert"
