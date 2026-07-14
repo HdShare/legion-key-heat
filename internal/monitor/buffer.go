@@ -132,6 +132,14 @@ func (m *Monitor) flush() {
 	}
 }
 
+// 获取当前数据
+func (m *Monitor) GetCurrentStats() (string, map[string]int, int) {
+	if m == nil || m.counter == nil {
+		return "", map[string]int{}, 0
+	}
+	return m.counter.GetCurrentStats()
+}
+
 // 停止监听
 func (m *Monitor) Stop() {
 	close(m.keyChan)

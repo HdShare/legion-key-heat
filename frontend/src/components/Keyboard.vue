@@ -137,6 +137,15 @@ const formatDate = (date) => {
   if (!date) return "";
   return date;
 };
+let heatmapRefreshTimer = null
+const scheduleHeatmapRefresh = () => {
+  if (tab.value !== "heat") return
+  if (heatmapRefreshTimer) clearTimeout(heatmapRefreshTimer)
+  heatmapRefreshTimer = setTimeout(() => {
+    applyRange()
+    heatmapRefreshTimer = null
+  }, 150)
+}
 const applyRange = () => {
   const start = formatDate(startDate.value) ?? "";
   const end = formatDate(endDate.value) ?? "";
@@ -245,6 +254,7 @@ onMounted(async () => {
     const next = new Set(activeKeys.value)
     if (type === "down") {
       next.add(key)
+      scheduleHeatmapRefresh()
     } else if (type === "up") {
       next.delete(key)
     }
@@ -274,6 +284,10 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   observer?.disconnect()
   window.removeEventListener("blur", handleBlur)
+  if (heatmapRefreshTimer) {
+    clearTimeout(heatmapRefreshTimer)
+    heatmapRefreshTimer = null
+  }
 })
 
 const checkPermission = () => {

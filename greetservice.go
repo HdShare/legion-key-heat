@@ -34,6 +34,14 @@ func (g *GreetService) GetHeatmap(start, end string) map[string]int {
 		log.Printf("获取热力图数据失败: %v", err)
 		return map[string]int{}
 	}
+	if g.t != nil && g.t.mon != nil {
+		date, current, total := g.t.mon.GetCurrentStats()
+		if total > 0 && date >= start && date <= end {
+			for keyName, count := range current {
+				data[keyName] += count
+			}
+		}
+	}
 	return data
 }
 
