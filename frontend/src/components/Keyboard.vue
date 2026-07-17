@@ -473,7 +473,7 @@ const startPermissionWatch = () => {
   border-radius: 999px;
   padding: 4px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  left: -40px;
+  left: -45px;
 }
 
 .indicator {
@@ -521,7 +521,7 @@ const startPermissionWatch = () => {
   gap: 8px;
   margin-left: auto;
   position: relative;
-  right: -40px;
+  right: -45px;
 }
 
 .date-input {
@@ -584,7 +584,7 @@ const startPermissionWatch = () => {
   align-items: center;
   gap: 8px;
   position: relative;
-  left: -40px;
+  left: -45px;
 }
 
 .status-item {
@@ -680,7 +680,7 @@ const startPermissionWatch = () => {
   display: flex;
   gap: 10px;
   position: relative;
-  right: -25px;
+  right: -15px;
 }
 
 .action-btn {
