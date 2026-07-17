@@ -222,6 +222,21 @@ const getPrompt = () => {
 
 let observer
 const layout = ref([])
+const topFiveKeyCodes = computed(() => {
+  const countsByCode = new Map()
+
+  layout.value.flat().forEach((key) => {
+    if (!key.Code || key.Code === "None" || key.Count <= 0) return
+    countsByCode.set(key.Code, Math.max(countsByCode.get(key.Code) || 0, key.Count))
+  })
+
+  return new Set(
+    Array.from(countsByCode.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([code]) => code)
+  )
+})
 onMounted(async () => {
   // 获取键盘布局
   GetKeyLayout("ANSI").then(async (result) => {
@@ -378,7 +393,10 @@ const startPermissionWatch = () => {
         <div class="key" :class="{ active: activeKeys.has(key.Code), hot: key.Hot > 0.6 }"
           :style="key.Code === 'None' ? null : [keyStyleCache, { '--t': key.Hot }]"
           @mouseenter="onKeyEnter(key, $event)" @mousemove="onKeyMove" @mouseleave="onKeyLeave">
-          {{ key.Label }}
+          <span class="key-label">{{ key.Label }}</span>
+          <span v-if="tab === 'heat' && topFiveKeyCodes.has(key.Code)" class="key-count-badge">
+            {{ key.Count }}
+          </span>
         </div>
       </div>
     </div>
@@ -432,6 +450,7 @@ const startPermissionWatch = () => {
 
 .key {
   --t: 0;
+  position: relative;
   text-align: center;
   white-space: pre-wrap;
   box-sizing: border-box;
@@ -449,6 +468,47 @@ const startPermissionWatch = () => {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.key-count-badge {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  z-index: 1;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(35, 35, 40, 0.72);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.key-label {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  text-align: right;
+  line-height: 1.05;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
+.key.hot .key-count-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
 }
 
 .key:active,
